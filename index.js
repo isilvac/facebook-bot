@@ -14,9 +14,6 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express().use(bodyParser.json());
 
-//const fs = require('fs'),
-//const https = require('https'),
-
 //import internal modules
 const api = require('./core/api');
 const response = require('./core/response');
@@ -27,17 +24,6 @@ const response = require('./core/response');
 //require('console-stamp')(logger, {pattern: 'yyyy-mm-dd HH:MM:ss', stdout: output });
 require('console-stamp')(console, {pattern: 'yyyy-mm-dd HH:MM:ss'});
 
-
-//Creates HTTPS server on https://35.197.122.55/ with TLS certificates from options
-// var options = {
-//   host : 'fbbot.tiaxa.com',
-//   servername : 'fbbot.tiaxa.com',
-//   port: 443,
-//   key  : fs.readFileSync('server.key'),
-//   cert : fs.readFileSync('server.crt'),
-//   ca : fs.readFileSync('/home/isilva/facebookbot/cert/USERTrustRSAOrganizationValidationSecureServerCA.crt')
-// };
-//https.createServer(options, app).listen(443, () => {console.log('Secure server started')} );
 app.listen(process.env.PORT || 1337, () => console.log('Server started'));
 
 /*

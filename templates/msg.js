@@ -2,7 +2,7 @@
  * Returns a generic greetings to the user
  *
  * @param   {String}          name - First name of the user
- * @returns {undefined}
+ * @returns {String}
  */
 function greetings(name) {
   return {
