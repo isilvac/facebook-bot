@@ -28,6 +28,7 @@ app.listen(process.env.PORT || 1337, () => console.log('Server started'));
 
 /*
  * POST METHOD
+ * Process every request the web hook receives from the user
  */
 app.post('/webhook/', function(req, res) {
   let messaging_events = req.body.entry[0].messaging
@@ -52,6 +53,7 @@ app.post('/webhook/', function(req, res) {
 
 /*
  * GET METHOD
+ * Only for Facebook verification of the Webhook
  */
 app.get('/webhook', (req, res) => {
   let mode = req.query['hub.mode'];

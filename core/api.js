@@ -9,6 +9,12 @@ const util = require('util');
 // Logger
 require('console-stamp')(console, {pattern: 'yyyy-mm-dd HH:MM:ss'});
 
+/**
+ * Sends a message via Facebook Graph API
+ *
+ * @param   {integer}   sender_psid - ID the user
+ * @param   {String}    response - content to send
+ */
 function callSendAPI(sender_psid, response) {
   let request_body = {
     "recipient": {
@@ -32,9 +38,16 @@ function callSendAPI(sender_psid, response) {
   });
 };
 
+/**
+ * Retrieves personal information of the user via Facebook Graph API
+ *
+ * @param   {integer}   sender_psid - ID the user
+ * @return  {String}    name of the user
+ */
 function getProfileDetails(psid) {
   return new Promise (
     function (resolve, reject) {
+      console.log("https://graph.facebook.com/v2.6/" + psid);
       request({
           "uri": "https://graph.facebook.com/v2.6/" + psid,
         "qs": { "access_token": PAGE_ACCESS_TOKEN,

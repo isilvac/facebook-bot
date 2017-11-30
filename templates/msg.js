@@ -37,7 +37,7 @@ function greetings(name) {
  * Returns a Rich Card to make a call
  * @TODO	convert phone as a parameter
  */
-const ejecutivo = {
+const agent = {
 	"attachment":{
 	  "type":"template",
 	  "payload":{
@@ -58,7 +58,7 @@ const ejecutivo = {
  * Returns a Rich Card to make a call
  * @TODO	convert phone as a parameter
  */
-const equipos = {
+const device = {
 	"attachment": {
 	  "type": "template",
 	  "payload":{
@@ -141,8 +141,165 @@ const equipos = {
 	}
 };
 
+/**
+ * Returns Account Balance and gives the options to get a credit
+ */
+const balance = {
+	"attachment": {
+	  "type": "template",
+	  "payload":{
+	    "template_type": "button",
+	    "text": "Tu saldo es de $0,22 (vigencia: 31/12/2017)\n¿deseas ver opciones de crédito?",
+	    "buttons": [
+	      {
+	        "type": "postback",
+	        "title": "SI",
+	        "payload": "si",
+	      },
+	      {
+	        "type": "postback",
+	        "title": "NO",
+	        "payload": "no",
+	      }
+	    ]
+	  }
+	}
+};
+
+/**
+ * Returns Pack offer based on user Account Balance
+ */
+const packs = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "No cuentas con saldo suficiente para comprar paquetes, ¿deseas ver opciones de crédito?",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "SI",
+          "payload": "si",
+        },
+        {
+          "type": "postback",
+          "title": "NO",
+          "payload": "no",
+        }
+      ]
+    }
+  }
+};
+
+/**
+ * Returns Credit Offering based on user details
+ */
+const creditOffer = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "Elige la opción de servicio que deseas solicitar",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "Avance de Saldo",
+          "payload": "sos",
+        },
+        {
+          "type": "postback",
+          "title": "Avance de Paquetes",
+          "payload": "pqt",
+        }
+      ]
+    }
+  }
+};
+
+const sosOffer = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "Estos son los Avances que tenemos para ti ",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "Avance de $1",
+          "payload": "1",
+        },
+        {
+          "type": "postback",
+          "title": "Avance de $2",
+          "payload": "2",
+        },
+        {
+          "type": "postback",
+          "title": "Avance de $3",
+          "payload": "3",
+        }
+      ],
+    }
+  }
+};
+
+const pqtOffer = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "Estos son los Paquetes que tenemos para ti ",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "Paquete de 50 MB",
+          "payload": "50mb",
+        },
+        {
+          "type": "postback",
+          "title": "Paquete de 150 MB",
+          "payload": "150mb",
+        }
+      ],
+    }
+  }
+};
+
+/**
+ * Returns the Pack information and ask for Acceptance
+ *
+ * @param   {String}          pqtid - Pack ID to be purchased
+ * @param   {double}          cost - Pack cost
+ * @param   {String}          validity - Validity of the pack
+ * @returns {String}
+ */
+function pqtPack(pqtid, cost, validity) {
+  return {
+  	"attachment": {
+	    "type": "template",
+	    "payload":{
+	      "template_type": "button",
+	      "text": "Este paquete tiene una vigencia de 1 " + validity + " y su costo es de $" + cost + " + $0,1 de fee. Valores con IVA inc.",
+	      "buttons": [
+	        {
+	          "type": "postback",
+	          "title": "Acepto",
+	          "payload": pqtid + "ok"
+	        }
+	      ]
+	    }
+    }
+  };	
+};
+
 module.exports = {
 	greetings,
-	ejecutivo,
-	equipos
+	agent,
+	device,
+	balance,
+	packs,
+	creditOffer,
+	sosOffer,
+	pqtOffer,
+	pqtPack
 };
