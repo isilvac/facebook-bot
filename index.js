@@ -1,30 +1,39 @@
 //
-// Facebook bot dummy
+// Facebook bot
 // @date 2017-11-17
 // @author Ignacio Silva
 //
 'use strict';
+require('dotenv').config({path: '/home/isilva/facebookbot/parameters.env'});
 
-//imports environment variables
-const VERIFY_TOKEN = "CWtZ31Vf5k";
-  
 //import modules
-const express = require('express');
+const express    = require('express');
 const bodyParser = require('body-parser');
-const request = require('request');
-const app = express().use(bodyParser.json());
-
+const request    = require('request');
+const app        = express().use(bodyParser.json());
+const fs         = require('fs');
+const https      = require('https');
+const util       = require('util');
 //import internal modules
-const api = require('./core/api');
-const response = require('./core/response');
+const api        = require('./core/api');
+const response   = require('./core/response');
 
-// Logger to a file
-//const output = fs.createWriteStream('./sslbot.log'),
-//  logger = new console.Console(output);
-//require('console-stamp')(logger, {pattern: 'yyyy-mm-dd HH:MM:ss', stdout: output });
-require('console-stamp')(console, {pattern: 'yyyy-mm-dd HH:MM:ss'});
+var ctx     = require('./core/context');
+var options = {
+  host : process.env.HTTPS_HOST,
+  servername : process.env.HTTPS_SERVERNAME,
+  port : process.env.HTTPS_PORT,
+  key  : fs.readFileSync(process.env.HTTPS_KEY),
+  cert : fs.readFileSync(process.env.HTTPS_CERT),
+  ca   : fs.readFileSync(process.env.HTTPS_CA)
+};
 
-app.listen(process.env.PORT || 1337, () => console.log('Server started'));
+require('console-stamp')(console, {pattern: 'yyyy-mm-dd HH:MM:ss' });
+// Sets server port and logs message on success
+https.createServer(options, app).listen(
+  process.env.HTTPS_PORT,
+  () => {console.log('Secure server started')}
+);
 
 /*
  * POST METHOD
@@ -32,18 +41,30 @@ app.listen(process.env.PORT || 1337, () => console.log('Server started'));
  */
 app.post('/webhook/', function(req, res) {
   let messaging_events = req.body.entry[0].messaging
+
   for (let i = 0; i < messaging_events.length; i++) {
-    let event = req.body.entry[0].messaging[i]
-    let sender = event.sender.id
+    let event  = req.body.entry[0].messaging[i];
+    let sender = event.sender.id;
+    console.log("INPUT:\n" + util.inspect(req.body.entry[0].messaging[i], false, null));
 
     api.getProfileDetails(sender).then(function(name) {
-      console.log('PSID: ' + sender + ' nombre: ' + name);
       if (event.message) {
-        response.handleMessage(sender, name, event.message);        
-      }         
+        if (event.message.quick_reply) {
+          response.handleQuickReply(sender, name, event.message.quick_reply);
+          console.log('PSID:' + sender + ',Name:' + name + ',Type:quick_reply,Content:' + event.message.quick_reply.payload + ',Context:' + ctx.getContext() +',Destination:MO');
+        }
+        else {
+          if (message.startsWith("/")) {
+            response.handleCommand(sender, message);
+          } else {
+            response.handleMessage(sender, name, event.message);        
+            console.log('PSID:' + sender + ',Name:' + name + ',Type:Text,Content:' + event.message.text + ',Context:' + ctx.getContext() +',Destination:MO');
+          }
+        }
+      }        
       else if (event.postback) {
         response.handlePostback(sender, name, event.postback);
-        console.log("postback! " + event.postback.text)
+        console.log('PSID:' + sender + ',Name:' + name + ',Type:Postback,Content:' + event.postback.payload + ',Context:' + ctx.getContext() +',Destination:MO');
       } 
     });
   }
@@ -56,16 +77,16 @@ app.post('/webhook/', function(req, res) {
  * Only for Facebook verification of the Webhook
  */
 app.get('/webhook', (req, res) => {
-  let mode = req.query['hub.mode'];
-  let token = req.query['hub.verify_token'];
+  let mode      = req.query['hub.mode'];
+  let token     = req.query['hub.verify_token'];
   let challenge = req.query['hub.challenge'];
   if (mode && token) {
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      console.log('WEBHOOK VERIFIED');
+    if (mode === 'subscribe' && token === process.env.VERIFY_TOKEN) {
+      console.log('Webhook verified');
       res.status(200).send(challenge);
     } else {
-      console.log('ERROR');
-      res.sendStatus(403);      
+      console.error('Webhook verification error');
+      res.sendStatus(403);
     }
   }
 });
