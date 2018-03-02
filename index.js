@@ -4,7 +4,7 @@
  * @author Ignacio Silva
  */
 'use strict';
-require('dotenv').config({path: '/home/isilva/facebookbot/parameters.env'});
+require('dotenv').config();
 
 //import module,
 const express  = require('express'),
