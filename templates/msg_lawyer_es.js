@@ -5,32 +5,34 @@
  * @returns {String}
  */
 function greetings(name) {
-  return {
-      "attachment": {
-        "type": "template",
-        "payload":{
-          "template_type": "button",
-          "text": "Hola " + name + ",\nEn Defensa Deudores hacemos valer tus derechos. Te orientamos y defendemos. Cuando no sabes qué hacer, dónde acudir, o qué plazos existen, estamos contigo para brindarte la mejor asesoría.",
-          "buttons": [
-            {
-              "type": "postback",
-              "title": "Preguntas Frecuentes",
-              "payload": "faq"
-            },
-            {
-              "type": "postback",
-              "title": "Consulta gratuita",
-              "payload": "consulta",
-            },
-            {
-              "type": "postback",
-              "title": "Quiero me llamen",
-              "payload": "llamada",
-            }
-          ]
+  return { "text": "Hola " + name + "!" };
+};
+
+const menu = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "En Defensa Deudores hacemos valer tus derechos. Te orientamos y defendemos. Cuando no sabes qué hacer, dónde acudir, o qué plazos existen, estamos contigo para brindarte la mejor asesoría.",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "Preguntas Frecuentes",
+          "payload": "faq"
+        },
+        {
+          "type": "postback",
+          "title": "Consulta gratuita",
+          "payload": "consulta",
+        },
+        {
+          "type": "postback",
+          "title": "Quiero me llamen",
+          "payload": "llamada",
         }
-      }
-  };
+      ]
+    }
+  }
 };
 
 const faq = {
@@ -430,7 +432,8 @@ function greetings2(name) {
 
 module.exports = {
 	greetings,
-	faq,
+	menu,
+  faq,
 	consulta,
 	llamada,
 	cobranza,

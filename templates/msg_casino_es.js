@@ -5,32 +5,34 @@
  * @returns {String}
  */
 function greetings(name) {
-  return {
-      "attachment": {
-        "type": "template",
-        "payload":{
-          "template_type": "button",
-          "text": "Hola " + name + "! Ven a disfrutar del increible mundo de la entregtención en SUN MONTICELLO!\n¿En qué te podemos ayudar?",
-          "buttons": [
-            {
-              "type": "postback",
-              "title": "Panoramas",
-              "payload": "panorama"
-            },
-            {
-              "type": "postback",
-              "title": "Casino",
-              "payload": "casino"
-            },
-            {
-              "type": "postback",
-              "title": "Hotel",
-              "payload": "hotel"
-            }
-          ]
+  return { "text": "Hola " + name + "! Ven a disfrutar del increible mundo de la entretención en SUN MONTICELLO!" };
+};
+
+const menu = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "¿En qué te podemos ayudar?",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "Panoramas",
+          "payload": "panorama"
+        },
+        {
+          "type": "postback",
+          "title": "Casino",
+          "payload": "casino"
+        },
+        {
+          "type": "postback",
+          "title": "Hotel",
+          "payload": "hotel"
         }
-      }
-  };
+      ]
+    }
+  }
 };
 
 const panorama = {
@@ -302,11 +304,6 @@ const servicio = {
       "content_type": "text",
       "title": "Gastronomia",
       "payload": "gastronomia"
-    },
-    {
-      "content_type": "text",
-      "title": "Piscina terraza",
-      "payload": "piscina"
     }
   ]
 };
@@ -380,6 +377,7 @@ const gastronomia = {
 
 module.exports = {
 	greetings,
+	menu,
 	panorama,
 	casino,
 	hotel,

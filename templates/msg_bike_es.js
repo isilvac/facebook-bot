@@ -5,32 +5,34 @@
  * @returns {String}
  */
 function greetings(name) {
-  return {
-      "attachment": {
-        "type": "template",
-        "payload":{
-          "template_type": "button",
-          "text": "Hola " + name + "! Bienvenid@ a Bicicletas SCOTT!\nQue quisieras ver?",
-          "buttons": [
-            {
-              "type": "postback",
-              "title": "Catálogo",
-              "payload": "catalogo",
-            },
-            {
-              "type": "postback",
-              "title": "Tiendas",
-              "payload": "sucursal",
-            },
-            {
-              "type": "postback",
-              "title": "Redes sociales",
-              "payload": "redesSociales",
-            }
-          ]
+  return { "text": "Hola " + name + "! Bienvenido a bicicletas SCOTT!" };
+};
+
+const menu = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "¿Que quisieras ver?",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "Catálogo",
+          "payload": "catalogo",
+        },
+        {
+          "type": "postback",
+          "title": "Tiendas",
+          "payload": "sucursal",
+        },
+        {
+          "type": "postback",
+          "title": "Redes sociales",
+          "payload": "redesSociales",
         }
-      }
-  };
+      ]
+    }
+  }
 };
 
 const contacto = {
@@ -393,6 +395,7 @@ const redesSociales = {
 
 module.exports = {
 	greetings,
+	menu,
 	contacto,
 	catalogo,
 	modelosMontana,

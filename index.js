@@ -1,24 +1,31 @@
-//
-// Facebook bot
-// @date 2017-11-17
-// @author Ignacio Silva
-//
+/*
+ * Facebook Webhook
+ * @date 2017-11-17
+ * @author Ignacio Silva
+ */
 'use strict';
 require('dotenv').config({path: '/home/isilva/facebookbot/parameters.env'});
 
-//import modules
-const express    = require('express');
-const bodyParser = require('body-parser');
-const request    = require('request');
-const app        = express().use(bodyParser.json());
-const fs         = require('fs');
-const https      = require('https');
-const util       = require('util');
+//import module,
+const express  = require('express'),
+  xhub         = require('express-x-hub'),
+  bodyParser   = require('body-parser'),
+  cookieParser = require('cookie-parser'),
+  request      = require('request'),
+  fs           = require('fs'),
+  https        = require('https'),
+  app          = express(),
+  util         = require('util');
 //import internal modules
-const api        = require('./core/api');
-const response   = require('./core/response');
+const api  = require('./core/api'),
+  response = require('./core/response'),
+  userMap  = require('./core/userMap'),
+  ctx      = require('./core/context');
+// set parsers for app
+app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
-var ctx     = require('./core/context');
 var options = {
   host : process.env.HTTPS_HOST,
   servername : process.env.HTTPS_SERVERNAME,
@@ -28,7 +35,8 @@ var options = {
   ca   : fs.readFileSync(process.env.HTTPS_CA)
 };
 
-require('console-stamp')(console, {pattern: 'yyyy-mm-dd HH:MM:ss' });
+require('console-stamp')(console, { pattern: 'yyyy-mm-dd HH:MM:ss'});
+
 // Sets server port and logs message on success
 https.createServer(options, app).listen(
   process.env.HTTPS_PORT,
@@ -40,37 +48,57 @@ https.createServer(options, app).listen(
  * Process every request the web hook receives from the user
  */
 app.post('/webhook/', function(req, res) {
-  let messaging_events = req.body.entry[0].messaging
+  const data = req.body;
+  //console.log("INPUT:\n" + util.inspect(data, false, null));
 
-  for (let i = 0; i < messaging_events.length; i++) {
-    let event  = req.body.entry[0].messaging[i];
-    let sender = event.sender.id;
-    console.log("INPUT:\n" + util.inspect(req.body.entry[0].messaging[i], false, null));
-
-    api.getProfileDetails(sender).then(function(name) {
-      if (event.message) {
-        if (event.message.quick_reply) {
-          response.handleQuickReply(sender, name, event.message.quick_reply);
-          console.log('PSID:' + sender + ',Name:' + name + ',Type:quick_reply,Content:' + event.message.quick_reply.payload + ',Context:' + ctx.getContext() +',Destination:MO');
-        }
-        else {
-          if (message.startsWith("/")) {
-            response.handleCommand(sender, message);
-          } else {
-            response.handleMessage(sender, name, event.message);        
-            console.log('PSID:' + sender + ',Name:' + name + ',Type:Text,Content:' + event.message.text + ',Context:' + ctx.getContext() +',Destination:MO');
-          }
-        }
-      }        
-      else if (event.postback) {
-        response.handlePostback(sender, name, event.postback);
-        console.log('PSID:' + sender + ',Name:' + name + ',Type:Postback,Content:' + event.postback.payload + ',Context:' + ctx.getContext() +',Destination:MO');
-      } 
-    });
+  if(!req.isXHub || !req.isXHubValid()) {
+    console.log('Warning - request header X-Hub-Signature not present or invalid');
+    return this.reject('No X-Hub Signature', req, res);
+    res.sendStatus(401);
   }
-  res.sendStatus(200)
-});
 
+  if (data.object === 'page') {
+    res.sendStatus(200);
+
+    // Iterate over each entry
+    data.entry.forEach((pageEntry) => {
+      if (!pageEntry.messaging) {
+        return;
+      }
+
+      // Iterate over each messaging event
+      pageEntry.messaging.forEach((messagingEvent) => {
+
+        // check user in hashmap
+        let sender = messagingEvent.sender.id;
+        if (!userMap.has(sender)) {
+          console.log("New user: " + sender);
+          api.getUserDetails(sender).then(function(data) {
+            let obj = JSON.parse(data);
+            userMap.insert(
+              obj.id,
+              obj.first_name,
+              obj.last_name,
+              obj.locale.toLowerCase().split("_")[0],
+              userMap.defaultContext(),
+              new Date().toISOString()
+            );
+            // Say hello to the new user
+            let msg = ctx['msg_' + userMap.defaultContext() + '_es'];// + obj.locale.toLowerCase().split("_")[0]];
+            api.callSendAPI(sender, msg.greetings(obj.first_name));
+            setTimeout(function() {
+              processMessage(sender, messagingEvent);
+            }, 1000);
+          })
+        } else {
+          processMessage(sender, messagingEvent);
+        }
+      }) // pageEntry foreach
+    }) // dataEntry foreach
+  } else {
+    res.sendStatus(400); // Not a valid message for Webhook
+  }
+});
 
 /*
  * GET METHOD
@@ -79,14 +107,42 @@ app.post('/webhook/', function(req, res) {
 app.get('/webhook', (req, res) => {
   let mode      = req.query['hub.mode'];
   let token     = req.query['hub.verify_token'];
-  let challenge = req.query['hub.challenge'];
   if (mode && token) {
     if (mode === 'subscribe' && token === process.env.VERIFY_TOKEN) {
       console.log('Webhook verified');
-      res.status(200).send(challenge);
+      res.status(200).send(req.query['hub.challenge']);
     } else {
       console.error('Webhook verification error');
       res.sendStatus(403);
     }
   }
 });
+
+/**
+ * Method to process the message event based on its type
+ */
+function processMessage(sender, messagingEvent) {
+  // process request
+  if (messagingEvent.message) {
+    if (messagingEvent.message.quick_reply) {
+      response.handleQuickReply(sender, messagingEvent.message.quick_reply);
+    }
+    else {
+      let message = messagingEvent.message.text; 
+      if (message.startsWith("/")) {
+        response.handleCommand(sender, message);
+      } else {
+        response.handleMessage(sender, messagingEvent.message);        
+      }
+    }
+  }
+  else if (messagingEvent.postback) {
+    response.handlePostback(sender, messagingEvent.postback);
+  }
+  // else if (messagingEvent.account_linking) {
+  //   response.handleReceiveAccountLink(sender, messagingEvent);
+  // }
+  else {
+    console.error('Unknown messagingEvent: ', messagingEvent);
+  }
+}

@@ -5,32 +5,34 @@
  * @returns {String}
  */
 function greetings(name) {
-  return {
-      "attachment": {
-        "type": "template",
-        "payload":{
-          "template_type": "button",
-          "text": "Hola " + name + "! Bienvenido a TIAXATEL!\nDinos como podemos ayudarte",
-          "buttons": [
-            {
-              "type": "postback",
-              "title": "Consultar Saldo",
-              "payload": "saldo",
-            },
-            {
-              "type": "postback",
-              "title": "Comprar Paquetes",
-              "payload": "paquetes",
-            },
-            {
-              "type": "postback",
-              "title": "Comprar Equipos",
-              "payload": "equipos",
-            }
-          ]
+	return { "text": "Hola " + name + ", bienvenido a TIAXATEL!" };
+}; 
+
+const menu = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "Dinos como podemos ayudarte",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "Consultar Saldo",
+          "payload": "saldo",
+        },
+        {
+          "type": "postback",
+          "title": "Comprar Paquetes",
+          "payload": "paquetes",
+        },
+        {
+          "type": "postback",
+          "title": "Comprar Equipos",
+          "payload": "equipos",
         }
-      }
-  };
+      ]
+    }
+  }
 };
 
 /**
@@ -294,6 +296,7 @@ function pqtPack(pqtid, cost, validity) {
 
 module.exports = {
 	greetings,
+	menu,
 	agent,
 	device,
 	balance,

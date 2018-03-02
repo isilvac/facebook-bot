@@ -5,32 +5,34 @@
  * @returns {String}
  */
 function greetings(name) {
-  return {
-      "attachment": {
-        "type": "template",
-        "payload":{
-          "template_type": "button",
-          "text": "Hi " + name + "! Come and enjoy the incredible world of entertainment in SUN MONTICELLO!\nHow can we help you?",
-          "buttons": [
-            {
-              "type": "postback",
-              "title": "Events",
-              "payload": "panorama"
-            },
-            {
-              "type": "postback",
-              "title": "Casino",
-              "payload": "casino"
-            },
-            {
-              "type": "postback",
-              "title": "Hotel",
-              "payload": "hotel"
-            }
-          ]
+  return { "text": "Welcome " + name + "! Come and enjoy the amazing world of entertainment in SUN MONTICELLO!" };
+};
+
+const menu = {
+  "attachment": {
+    "type": "template",
+    "payload":{
+      "template_type": "button",
+      "text": "How can we help you?",
+      "buttons": [
+        {
+          "type": "postback",
+          "title": "Events",
+          "payload": "panorama"
+        },
+        {
+          "type": "postback",
+          "title": "Casino",
+          "payload": "casino"
+        },
+        {
+          "type": "postback",
+          "title": "Hotel",
+          "payload": "hotel"
         }
-      }
-  };
+      ]
+    }
+  }
 };
 
 const panorama = {
@@ -380,6 +382,7 @@ const gastronomia = {
 
 module.exports = {
 	greetings,
+	menu,
 	panorama,
 	casino,
 	hotel,

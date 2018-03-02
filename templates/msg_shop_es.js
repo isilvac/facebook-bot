@@ -5,36 +5,38 @@
  * @returns {String}
  */
 function greetings(name) {
-  return {
-	  "text": "Hola " + name + "! Bienvenid@ a Andesgear!\n¿en qué podemos ayudarte?",
-	  "quick_replies": [
-      	{
-      	  "content_type": "text",
-      	  "title": "Ver Productos",
-      	  "payload": "disponibilidad",
-      	},
-      	{
-      	  "content_type": "text",
-      	  "title": "Promociones",
-      	  "payload": "promociones",
-      	},
-      	{
-      	  "content_type": "text",
-      	  "title": "Ver Tiendas",
-      	  "payload": "sucursal"
-      	},
-      	{
-      	  "content_type": "text",
-      	  "title": "Eventos",
-      	  "payload": "eventos"
-      	},
-      	{
-      	  "content_type": "text",
-      	  "title": "Suscribete",
-      	  "payload": "contact"
-      	}
-	  ]
-  };
+  return { "text": "Hola " + name + ", Bienvenid@ a ANDESGEAR!" };
+};
+
+const menu = {
+  "text": "¿en qué podemos ayudarte?",
+  "quick_replies": [
+  	{
+  	  "content_type": "text",
+  	  "title": "Ver Productos",
+  	  "payload": "disponibilidad",
+  	},
+  	{
+  	  "content_type": "text",
+  	  "title": "Promociones",
+  	  "payload": "promociones",
+  	},
+  	{
+  	  "content_type": "text",
+  	  "title": "Ver Tiendas",
+  	  "payload": "sucursal"
+  	},
+  	{
+  	  "content_type": "text",
+  	  "title": "Eventos",
+  	  "payload": "eventos"
+  	},
+  	{
+  	  "content_type": "text",
+  	  "title": "Suscribete",
+  	  "payload": "contact"
+  	}
+  ]
 };
 
 const compra = {
@@ -492,6 +494,7 @@ const eventos = {
 
 module.exports = {
 	greetings,
+	menu,
 	compra,
 	disponibilidad,
 	cathombre,
