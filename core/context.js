@@ -5,11 +5,15 @@ const msg_shop_es   = require('../templates/msg_shop_es');
 const msg_casino_es = require('../templates/msg_casino_es');
 const msg_casino_en = require('../templates/msg_casino_en');
 
+// Anglo American 10/05/18
+const msg_mine_es = require('../templates/msg_mine_es');
+
 module.exports = {
- msg_telco_es,
- msg_bike_es,
- msg_lawyer_es,
- msg_shop_es,
- msg_casino_es,
- msg_casino_en
+    msg_telco_es,
+    msg_bike_es,
+    msg_lawyer_es,
+    msg_shop_es,
+    msg_casino_es,
+    msg_casino_en,
+    msg_mine_es
 }

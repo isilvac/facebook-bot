@@ -71,6 +71,11 @@ function handleMessage(sender_psid, received_message) {
       response = msg.casino;
       console.log('PSID:' + sender_psid + ',Type:Button,Content:casino' + ',Context:' + context + ',Destination:MT');
 
+      // ANGLO AMERICAN 10/05/18
+    } else if ((message.indexOf("tronadura") != -1) || (message.indexOf("tronaduras") != -1)) {
+      response = msg.tronadura;
+      console.log('PSID:' + sender_psid + ',Type:Button,Content:tronadura' + ',Context:' + context + ',Destination:MT');
+
     // GENERIC
     } else if((message.indexOf("hola") != -1) || (message.indexOf("hello") != -1) || (message.indexOf("holi") != -1) || (message.indexOf("iniciar") != -1) || (message.indexOf("menu") != -1)){
       response = msg.menu;
@@ -255,6 +260,27 @@ function handlePostback(sender_psid, received_postback) {
           console.log('PSID:' + sender_psid + ',Type:Button,Content:sucursalProvidencia' + ',Context:' + context + ',Destination:MT');
         }
         break;
+      case 'mine':
+        if (payload === 'tronadura'){
+          response = msg.tronadura;
+          console.log('PSID:' + sender_psid + ',Type:Button,Content:tronadura' + ',Context:' + context + ',Destination:MT');
+        } else if (payload === 'procedimiento') {
+          response = msg.procedimiento;
+          console.log('PSID:' + sender_psid + ',Type:Button,Content:procedimiento' + ',Context:' + context + ',Destination:MT');
+        } else if (payload === 'agent') {
+          response = msg.agent;
+          console.log('PSID:' + sender_psid + ',Type:Button,Content:agent' + ',Context:' + context + ',Destination:MT');
+        } else if (payload === 'mapa') {
+          response = msg.mapa;
+          console.log('PSID:' + sender_psid + ',Type:Carrousel,Content:mapa' + ',Context:' + context + ',Destination:MT');
+        } else if (payload === 'back2menu') {
+          response = msg.back2menu;
+          console.log('PSID:' + sender_psid + ',Type:Text,Content:back2menu' + ',Context:' + context + ',Destination:MT');
+        } else if (payload === 'superintendente') {
+          response = msg.superintendente;
+          console.log('PSID:' + sender_psid + ',Type:Call,Content:superintendente' + ',Context:' + context + ',Destination:MT');
+        }
+        break;
       default:
         if (payload === 'iniciar') {
           response = msg.menu;
@@ -327,7 +353,7 @@ function handleCommand(sender_psid, text) {
     if ((command[1] === '?') || (command[1] === 'help') || (command[1] == null)) {
       response = { "text": "Los contextos disponibles para el bot son:\n\n" + 
         "1. Telco: /context telco\n2. Bicicletas: /context bike\n3. Abogado: /context lawyer\n" +
-        "4. Tienda: /context shop\n5. Casino: /context casino"};
+        "4. Tienda: /context shop\n5. Casino: /context casino\n6. Mina: /context mine"};
     }
     else {
       userMap.setUserContext(sender_psid, command[1]);
