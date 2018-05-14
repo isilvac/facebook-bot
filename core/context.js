@@ -1,11 +1,9 @@
-const msg_telco_es  = require('../templates/msg_telco_es');
-const msg_bike_es   = require('../templates/msg_bike_es');
+const msg_telco_es = require('../templates/msg_telco_es');
+const msg_bike_es = require('../templates/msg_bike_es');
 const msg_lawyer_es = require('../templates/msg_lawyer_es');
-const msg_shop_es   = require('../templates/msg_shop_es');
+const msg_shop_es = require('../templates/msg_shop_es');
 const msg_casino_es = require('../templates/msg_casino_es');
 const msg_casino_en = require('../templates/msg_casino_en');
-
-// Anglo American 10/05/18
 const msg_mine_es = require('../templates/msg_mine_es');
 
 module.exports = {

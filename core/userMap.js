@@ -2,8 +2,8 @@
 const HMap = require('./hmap');
 const User = require('../model/user');
 
-const validContext = ["telco", "bike", "lawyer", "shop", "casino"];
-const validLocale  = ["es", "en"];
+const validContext = ["telco", "bike", "lawyer", "shop", "casino", "mine"];
+const validLocale = ["es", "en"];
 
 /**
  * Maps User data
@@ -143,7 +143,7 @@ class UserMap extends HMap {
    */
   update(id, updateObject) {
     const currentUser = this.get(id);
-    if (!currentUser){
+    if (!currentUser) {
       return {};
     }
 

@@ -5,7 +5,7 @@
  * @returns {String}
  */
 function greetings(name) {
-    return { "text": "Hola " + name + ", bienvenido!" };
+    return { "text": "Hola " + name + ", bienvenido al Bot de Mina Los Bronces!" };
 };
 
 const menu = {
@@ -36,7 +36,7 @@ const menu = {
 };
 
 const tronadura = {
-    "text": "Hoy tenemos las siguientes tronaduras\n\n14:30 horas.Tronadura INF05-3685/162 (396 k ton)\n17:30 horas.Tronaduras INF7A 3400/269 (191 kton)\n\n¿Deseas ver el mapa?",
+    "text": "Hoy tenemos las siguientes tronaduras\n\n14:30 horas. Tronadura INF05-3685/162 (396 k ton)\n17:30 horas. Tronaduras INF7A 3400/269 (191 kton)\n\n¿Deseas ver el mapa?",
     "quick_replies": [
         {
             "content_type": "text",
@@ -60,17 +60,17 @@ const procedimiento = {
             "buttons": [
                 {
                     "type": "web_url",
-                    "url": "https://dewatering:De@Wet@4Set@appl.anglochile.cl/dewatering/App/01_seguridad/procedimientoEmergencia.pdf",
+                    "url": "https://drive.google.com/open?id=11nOIQ-yC21kRkFsndfmQshYZKQpIuyQh",
                     "title": "Emergencia"
                 },
                 {
                     "type": "web_url",
-                    "url": "https://dewatering:De@Wet@4Set@appl.anglochile.cl/dewatering/App/01_seguridad/procedimientoTormenta.pdf",
+                    "url": "https://drive.google.com/open?id=1u9ecWBLwztkfR8RIThMjkHjfoJNYoFVm",
                     "title": "Tormenta eléctrica"
                 },
                 {
                     "type": "web_url",
-                    "url": "https://dewatering:De@Wet@4Set@appl.anglochile.cl/dewatering/App/01_seguridad/procedimientoConduccion.pdf",
+                    "url": "https://drive.google.com/open?id=1bUCke0yhdl1dT6PE9v2V0u_QDkMmTF3m",
                     "title": "Conduccion"
                 }
             ]
@@ -99,11 +99,6 @@ const agent = {
                     "type": "postback",
                     "title": "Superintendente",
                     "payload": "superintendente"
-                },
-                {
-                    "type": "postback",
-                    "title": "Equipo DW",
-                    "payload": "dw"
                 }
             ]
         }
@@ -135,24 +130,24 @@ const mapa = {
             "elements": [
                 {
                     "title": "Tronadura 14:30",
-                    "image_url": "https://dewatering:De@Wet@4Set@appl.anglochile.cl/dewatering/App/01_seguridad/PLANO%20DE%20EVACUACION%2002-05-2018%20INF05.png",
+                    "image_url": "https://drive.google.com/file/d/1iahW63DtquQGrNSw58nPzvoB7E-6PNNh/view?usp=sharing",
                     "subtitle": "INF05-3685/162 (396 k ton)",
                     "buttons": [
                         {
                             "type": "web_url",
-                            "url": "https://dewatering:De@Wet@4Set@appl.anglochile.cl/dewatering/App/01_seguridad/PLANO%20DE%20EVACUACION%2002-05-2018%20INF05.png",
+                            "url": "https://drive.google.com/file/d/1iahW63DtquQGrNSw58nPzvoB7E-6PNNh/view?usp=sharing",
                             "title": "Ver mapa"
                         }
                     ]
                 },
                 {
                     "title": "Tronadura 17:30",
-                    "image_url": "https://dewatering:De@Wet@4Set@appl.anglochile.cl/dewatering/App/01_seguridad/PLANO%20DE%20EVACUACION%2002-05-2018%20INF05.png",
+                    "image_url": "https://drive.google.com/file/d/1iahW63DtquQGrNSw58nPzvoB7E-6PNNh/view?usp=sharing",
                     "subtitle": "INF7A 3400/269 (191 kton)",
                     "buttons": [
                         {
                             "type": "web_url",
-                            "url": "https://dewatering:De@Wet@4Set@appl.anglochile.cl/dewatering/App/01_seguridad/PLANO%20DE%20EVACUACION%2002-05-2018%20INF05.png",
+                            "url": "https://drive.google.com/file/d/1iahW63DtquQGrNSw58nPzvoB7E-6PNNh/view?usp=sharing",
                             "title": "Ver mapa"
                         }
                     ]
